@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+{% for r in restaurants %}
+<br>
+<a href='{{ url_for("restaurantMenu", restaurant_id= r.id) }}'> {{ r.name  }} </a>
+<br>
+{% endfor%}
+</body>
+</html>

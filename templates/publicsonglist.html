@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+<title>{% block header %} <strong>{{ singer.name }}</strong> Songs
+{% endblock %}</title>
+
+<br>
+<br>
+{% block content %}
+
+<br>
+<br>
+{% with messages = get_flashed_messages() %}
+{% if messages  %}
+<ul>
+    {% for message in messages %}
+        <li><strong>{{ message }}</strong></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+
+
+<div class="row">
+
+    {% for i in songs %}
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <strong>{{ i.name }}</strong> <p><em>year:</em> {{ i.year_released }}</p>
+                        </div>
+                        <div class="panel-body">
+                            <p><em>Description:</em> {{ i.description }}</p>
+                            <p><em>Album:</em> {{ i.album }}</p>
+                        </div>
+                        <div class="panel-footer">
+
+                    </div>
+                </div>
+                <!-- /.col-lg-4 -->
+
+    {% endfor %}
+ </div>
+
+<!--<br>-->
+
+
+{% endblock %}

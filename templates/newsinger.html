@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block header %}<h1> New singer  </h1>{% endblock %}
+{% block content %}<form action="{{ url_for('newSinger') }}" method = 'POST'>
+
+<p>Name:</p>
+
+<input type='text' size='30' name='name'>
+
+<input class="btn btn-primary" type='submit' value='Create'>
+
+</form>{% endblock %}
+
+

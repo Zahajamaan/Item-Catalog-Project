@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block header %}<h2> Are you sure you want to delete {{song.name}}? </h2>{% endblock %}
+{% block content %}<form action="{{ url_for('deleteSong', singer_id=song.singer_id, song_id=song.id)}}" method = 'post'>
+
+<input class="btn btn-primary"  type='submit', value = 'Delete'>
+
+</form>
+<br>
+<a class="btn btn-primary" href = "{{ url_for('songsList', singer_id = song.singer.id)}}"> Cancel </a>{% endblock %}
+
+
+
