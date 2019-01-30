@@ -11,11 +11,13 @@ An application where you can create  a list of singers and add to them their son
 ## Usage
 Set up database by
 
-`python database_setup.py`
+`python3 database_setup.py`
+
+`python3 add_data_to_DB.py`
 
 Then run the application:
 
-`python application.py`
+`python3 application.py`
 
 After the last command you are able to browse the application at this URL:
 

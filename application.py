@@ -20,7 +20,7 @@ app = Flask(__name__)
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Singers And Songs Application"
-engine = create_engine('sqlite:///songsandsingers.db?check_same_thread=False')
+engine = create_engine('sqlite:///songsandsingers1.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -192,6 +192,8 @@ def singersListJSON(singer_id):
 @app.route('/singers/')
 def singersInedx():
     singers = session.query(Singer).all()
+    if singers == None:
+        singers = []
     if 'username' not in login_session:
         return render_template('unauthenticated_index.html', singers=singers)
     return render_template('index.html', singers=singers)
