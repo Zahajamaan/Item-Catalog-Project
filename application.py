@@ -192,7 +192,7 @@ def singersListJSON(singer_id):
 @app.route('/singers/')
 def singersInedx():
     singers = session.query(Singer).all()
-    if singers == None:
+    if singers is None:
         singers = []
     if 'username' not in login_session:
         return render_template('unauthenticated_index.html', singers=singers)
@@ -329,4 +329,3 @@ if __name__ == '__main__':
     app.debug = True
 
     app.run(host='0.0.0.0', port=5000)
-

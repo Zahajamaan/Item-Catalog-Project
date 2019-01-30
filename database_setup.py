@@ -9,6 +9,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -35,26 +36,23 @@ class Song(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     album = Column(String(250))
-    description = Column (String(250))
+    description = Column(String(250))
     year_released = Column(String(8))
     singer_id = Column(Integer, ForeignKey('singer.id'))
     singer = relationship(Singer)
     user = relationship(User)
     user_id = Column(Integer, ForeignKey('user.id'))
 
-
-
     @property
     def serialize(self):
         return {
-            'name':self.name,
+            'name': self.name,
             'description': self.description,
             'id': self.id,
             'year_released': self.year_released,
             'album': self.album,
 
         }
-
 
 
 engine = create_engine(
