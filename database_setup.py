@@ -9,7 +9,6 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-
 class User(Base):
     __tablename__ = 'user'
 
@@ -56,6 +55,10 @@ class Song(Base):
 
 
 engine = create_engine(
-    'sqlite:///songsandsingers1.db?check_same_thread=False'
+'sqlite:///catalog.db?check_same_thread=False'
 )
+engine = create_engine(
+'postgresql://catalog:catalogdb@localhost/catalog'
+)
+
 Base.metadata.create_all(engine)

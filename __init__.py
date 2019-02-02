@@ -1,6 +1,6 @@
 from flask import Flask, render_template, \
     request, redirect, url_for, flash, jsonify
-from database_setup import Base, Singer, Song, User
+#from database_setup import Base, Singer, Song, User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -15,12 +15,74 @@ import json
 from flask import make_response
 import requests
 
-app = Flask(__name__)
+import sys
+from sqlalchemy import Column, ForeignKey, Integer, String
 
+from sqlalchemy.ext.declarative import declarative_base
+
+from sqlalchemy.orm import relationship
+
+from sqlalchemy import create_engine
+
+from sqlalchemy.orm.exc import NoResultFound
+
+Base = declarative_base()
+
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    picture = Column(String(250))
+
+
+class Singer(Base):
+
+    __tablename__ = 'singer'
+
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
+    user = relationship(User)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+
+class Song(Base):
+
+    __tablename__ = 'song'
+
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
+    album = Column(String(250))
+    description = Column(String(250))
+    year_released = Column(String(8))
+    singer_id = Column(Integer, ForeignKey('singer.id'))
+    singer = relationship(Singer)
+    user = relationship(User)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+    @property
+    def serialize(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'id': self.id,
+            'year_released': self.year_released,
+            'album': self.album,
+
+        }
+
+
+app = Flask(__name__)
+#APP_PATH = '/var/www/catalog/catalog/'
+#CLIENT_ID = json.loads(open(APP_PATH + 'client_secrets.json', 'r').read())['web']['client_id']
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open('/var/www/catalog/catalog/client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Singers And Songs Application"
-engine = create_engine('sqlite:///songsandsingers1.db?check_same_thread=False')
+engine = create_engine('sqlite:///catalog.db?check_same_thread=False')
+engine = create_engine('postgresql://catalog:catalogdb@localhost/catalog')
+Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -54,7 +116,7 @@ def gconnect():
         return response
     code = request.data
     try:
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('/var/www/catalog/catalog/client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -141,7 +203,7 @@ def getUserID(email):
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
-    except TypeError:
+    except NoResultFound:
         return None
 
 
@@ -328,4 +390,5 @@ if __name__ == '__main__':
     app.secret_key = "super_secret_key"
     app.debug = True
 
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)
+    app.run()
