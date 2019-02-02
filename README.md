@@ -7,6 +7,8 @@ A web application where you can create  a list of singers and add to them their 
 * SSH port:2200
 * URL : http://ec2-18-222-182-250.us-east-2.compute.amazonaws.com/
 
+## ssh
+ssh -i  PRIVATE-KEY -p 2200 grader@18.222.182.250
 
 ## required installations:
 
