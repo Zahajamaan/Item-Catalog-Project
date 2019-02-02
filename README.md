@@ -1,26 +1,63 @@
-# Item Catalog Project
+# Item Catalog Project - Linux Server Configuration
 
-An application where you can create  a list of singers and add to them their songs. users have the ability to post, edit, and delete their own songs only. it uses third party authentication.
+A web application where you can create  a list of singers and add to them their songs. users have the ability to post, edit, and delete their own songs only. it uses third party authentication,deployed in a linux distribution. 
 
-## Set Up
 
-1. you can find the VM inside the vagrant folder [fullstack-nanodegree-vm repository](https://github.com/udacity/fullstack-nanodegree-vm).
+* IP: 18.222.182.250
+* SSH port:2200
+* URL : http://ec2-18-222-182-250.us-east-2.compute.amazonaws.com/
 
-2. Make sure you have Flask , Python 3.5 and above.
 
-## Usage
-Set up database by
+## required installations:
 
-`python3 database_setup.py`
+1- Apache2 with mod_wsgi module
 
-`python3 add_data_to_DB.py`
+2- Python 3
 
-Then run the application:
+3- UFW for firewall
 
-`python3 application.py`
 
-After the last command you are able to browse the application at this URL:
+## Third party apps used:
 
-`http://localhost:5000/`
+1- OAuth
+
+2- Flask
+
+
+
+# Configurations
+
+## apache 
+
+`<VirtualHost *:80>
+    ServerName 18.222.182.250
+    ServerAlias ec2-18-222-182-250.us-east-2.compute.amazonaws.com
+    ServerAdmin admin@18.222.182.250
+    WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+    <Directory /var/www/catalog/catalog/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static /var/www/catalog/catalog/static
+    <Directory /var/www/catalog/catalog/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>`
+  
+##WSGI 
+
+`import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,'/var/www/catalog/catalog')
+sys.path.insert(1,"/var/www/catalog/")
+from __init__ import app as application
+application.secret_key ='ADD SECRET KEY HERE'
+`
+
 
 
