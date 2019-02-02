@@ -29,7 +29,8 @@ A web application where you can create  a list of singers and add to them their 
 
 ## apache 
 
-`<VirtualHost *:80>
+```
+<VirtualHost *:80>
     ServerName 18.222.182.250
     ServerAlias ec2-18-222-182-250.us-east-2.compute.amazonaws.com
     ServerAdmin admin@18.222.182.250
@@ -46,18 +47,20 @@ A web application where you can create  a list of singers and add to them their 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     LogLevel warn
     CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>`
+</VirtualHost>
+```
   
 ##WSGI 
 
-`import sys
+```
+import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,'/var/www/catalog/catalog')
 sys.path.insert(1,"/var/www/catalog/")
 from __init__ import app as application
 application.secret_key ='ADD SECRET KEY HERE'
-`
+```
 
 
 
